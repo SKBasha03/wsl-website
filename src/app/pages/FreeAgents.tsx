@@ -386,7 +386,13 @@ const SOLD_OUT_PLAYER_IDS = new Set<string>([
   "def34",
   "def33",
   "fwd50",
-  "fwd42"
+  "fwd42",
+  "fwd37",
+  "gk1",
+  "fwd48",
+  "def4",
+  "def29",
+  "fwd15",
 ]);
 
 const IN_AUCTION_PLAYER_IDS = new Set<string>([
