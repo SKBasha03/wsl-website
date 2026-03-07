@@ -1,6 +1,4 @@
 import { useMemo } from "react";
-import { Link } from "react-router";
-import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Calendar, CheckCircle2, Clock, ChevronDown } from "lucide-react";
 import { getAllScheduledMatches, parseMatchDate } from "../lib/scheduleData";
@@ -66,20 +64,6 @@ export function Home() {
           <p className="text-base md:text-xl text-white/35 max-w-md leading-relaxed font-medium mt-2">
             Where legends are made. Every match, every transfer, every triumph.
           </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-3 justify-center mt-2">
-            <Link to="/schedule">
-              <Button className="bg-white text-black hover:bg-white/90 hover:scale-105 active:scale-95 transition-all duration-200 font-black px-8 h-12 text-xs tracking-[0.15em]">
-                VIEW SCHEDULE
-              </Button>
-            </Link>
-            <Link to="/season-info">
-              <Button className="bg-transparent border border-white/15 text-white/60 hover:text-white hover:bg-white/8 hover:border-white/25 hover:scale-105 active:scale-95 transition-all duration-200 font-semibold px-8 h-12 text-xs tracking-wide">
-                SEASON INFO
-              </Button>
-            </Link>
-          </div>
 
           {/* Stat pills */}
           <div className="flex flex-wrap gap-3 justify-center mt-4">

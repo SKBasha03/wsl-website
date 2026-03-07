@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
@@ -59,8 +58,6 @@ export function Auth() {
     return redirect && redirect.startsWith("/") ? redirect : "/";
   }, [searchParams]);
 
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -124,101 +121,51 @@ export function Auth() {
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white drop-shadow-2xl mb-3 leading-tight">
             Account
           </h1>
-          <p className="text-lg text-gray-300">Sign in to manage your squad and build your dream team</p>
+          <p className="text-lg text-gray-300">Create an account if you want to save your details for later</p>
         </div>
 
         <Card className="relative overflow-hidden border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-md shadow-2xl shadow-black/40 before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-br before:from-white/20 before:via-transparent before:to-white/10 before:-z-10">
           <CardHeader className="pb-6">
-            <CardTitle className="text-white text-2xl font-black">Welcome Back</CardTitle>
-            <p className="text-gray-300 mt-2">Sign in with your email and password</p>
+            <CardTitle className="text-white text-2xl font-black">Create Account</CardTitle>
+            <p className="text-gray-300 mt-2">Registration is optional. You can still build your squad without logging in.</p>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login" className="w-full">
-              <TabsList className="w-full items-stretch justify-between bg-white/5 border border-white/20 p-1.5 rounded-xl shadow-lg">
-                <TabsTrigger 
-                  value="login"
-                  className="data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border data-[state=active]:border-white/30 data-[state=active]:shadow-md text-gray-400 font-bold rounded-lg transition-all duration-200 hover:text-white"
-                >
-                  Login
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="register"
-                  className="data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border data-[state=active]:border-white/30 data-[state=active]:shadow-md text-gray-400 font-bold rounded-lg transition-all duration-200 hover:text-white"
-                >
-                  Register
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="login" className="mt-8">
-                <form className="space-y-5">
-                  <div className="space-y-2">
-                    <Label className="text-white font-semibold" htmlFor="login-email">Email</Label>
-                    <Input
-                      id="login-email"
-                      type="email"
-                      value={loginEmail}
-                      onChange={(e) => setLoginEmail(e.target.value)}
-                      placeholder="you@example.com"
-                      autoComplete="email"
-                      required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-white font-semibold" htmlFor="login-password">Password</Label>
-                    <Input
-                      id="login-password"
-                      type="password"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      placeholder="••••••••"
-                      autoComplete="current-password"
-                      required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
-                    />
-                  </div>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="register" className="mt-8">
-                <form onSubmit={handleRegister} className="space-y-5">
-                  <div className="space-y-2">
-                    <Label className="text-white font-semibold" htmlFor="register-email">Email</Label>
-                    <Input
-                      id="register-email"
-                      type="email"
-                      value={registerEmail}
-                      onChange={(e) => setRegisterEmail(e.target.value)}
-                      placeholder="you@example.com"
-                      autoComplete="email"
-                      required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-white font-semibold" htmlFor="register-password">Password</Label>
-                    <Input
-                      id="register-password"
-                      type="password"
-                      value={registerPassword}
-                      onChange={(e) => setRegisterPassword(e.target.value)}
-                      placeholder="Create a strong password"
-                      autoComplete="new-password"
-                      required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
-                    />
-                    <p className="text-xs text-gray-400 font-medium">Minimum 6 characters required.</p>
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={busy}
-                    className="w-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-none font-bold h-11"
-                  >
-                    {busy ? "Creating account…" : "Create Account"}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
+            <form onSubmit={handleRegister} className="space-y-5 mt-2">
+              <div className="space-y-2">
+                <Label className="text-white font-semibold" htmlFor="register-email">Email</Label>
+                <Input
+                  id="register-email"
+                  type="email"
+                  value={registerEmail}
+                  onChange={(e) => setRegisterEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-white font-semibold" htmlFor="register-password">Password</Label>
+                <Input
+                  id="register-password"
+                  type="password"
+                  value={registerPassword}
+                  onChange={(e) => setRegisterPassword(e.target.value)}
+                  placeholder="Create a strong password"
+                  autoComplete="new-password"
+                  required
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
+                />
+                <p className="text-xs text-gray-400 font-medium">Minimum 6 characters required.</p>
+              </div>
+              <Button
+                type="submit"
+                disabled={busy}
+                className="w-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-none font-bold h-11"
+              >
+                {busy ? "Creating account…" : "Create Account"}
+              </Button>
+            </form>
           </CardContent>
         </Card>
       </div>

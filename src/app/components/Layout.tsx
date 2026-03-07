@@ -101,8 +101,6 @@ export function Layout() {
               <div className="flex gap-1">
                 {([
                   { to: "/", label: "HOME" },
-                  { to: "/schedule", label: "SCHEDULE" },
-                  { to: "/season-info", label: "SEASON INFO" },
                   { to: "/transfers", label: "TRANSFERS" },
                 ] as const).map(({ to, label }) => {
                   const isActive = location.pathname === to;
@@ -149,16 +147,10 @@ export function Layout() {
                     Log out
                   </Button>
                 </div>
-              ) : (
-                <Link to={`/auth?redirect=${encodeURIComponent(location.pathname || "/")}`}>
-                  <Button className="border border-white/20 bg-white/10 hover:bg-white/20 text-white font-semibold shadow-md transition-all duration-200 hover:scale-105 active:scale-95 hover:border-white/30">
-                    Log in
-                  </Button>
-                </Link>
-              )}
+              ) : null}
 
               {/* Cart (Free Agents only) */}
-              {location.pathname === "/free-agents" && user && (
+              {location.pathname === "/free-agents" && (
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="ghost" className="relative border border-white/20 bg-white/5 hover:bg-white/15 text-white transition-all duration-200 hover:scale-105 active:scale-95">

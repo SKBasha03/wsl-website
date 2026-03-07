@@ -4,8 +4,6 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Player, useCart } from "../context/CartContext";
 import { toast } from "sonner";
-import { useAuth } from "../context/AuthContext";
-import { useLocation, useNavigate } from "react-router";
 
 interface PlayerCardProps {
   player: Player;
@@ -13,9 +11,6 @@ interface PlayerCardProps {
 
 export function PlayerCard({ player }: PlayerCardProps) {
   const { cart, addToCart } = useCart();
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
   const isInCart = cart.some(p => p.id === player.id);
   const isSoldOut = Boolean(player.soldOut);
   const isInAuction = Boolean(player.inAuction);
@@ -36,11 +31,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
 
     if (isInAuction) {
       toast.error(`${player.name} is currently in auction.`);
-      return;
-    }
-    if (!user) {
-      toast.error("Please log in to add players to your squad.");
-      navigate(`/auth?redirect=${encodeURIComponent(location.pathname)}`);
       return;
     }
     if (!isInCart) {
