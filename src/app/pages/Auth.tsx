@@ -52,7 +52,7 @@ function getFriendlyAuthError(error: unknown): string {
 export function Auth() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user, loading, signIn, signUp, signInWithGoogle } = useAuth();
+  const { user, loading, signIn, signUp } = useAuth();
 
   const redirectTo = useMemo(() => {
     const redirect = searchParams.get("redirect");
@@ -116,20 +116,6 @@ export function Auth() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setBusy(true);
-    try {
-      await signInWithGoogle();
-      toast.success("Logged in with Google!");
-      navigate(redirectTo, { replace: true });
-    } catch (err) {
-      console.error("[auth] google login failed", err);
-      toast.error(getFriendlyAuthError(err));
-    } finally {
-      setBusy(false);
-    }
-  };
-
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     setBusy(true);
@@ -159,24 +145,9 @@ export function Auth() {
         <Card className="relative overflow-hidden border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-md shadow-2xl shadow-black/40 before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-br before:from-white/20 before:via-transparent before:to-white/10 before:-z-10">
           <CardHeader className="pb-6">
             <CardTitle className="text-white text-2xl font-black">Welcome Back</CardTitle>
-            <p className="text-gray-300 mt-2">Choose your preferred sign-in method</p>
+            <p className="text-gray-300 mt-2">Sign in with your email and password</p>
           </CardHeader>
           <CardContent>
-            <Button
-              type="button"
-              disabled={busy}
-              onClick={handleGoogleLogin}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-bold h-12 text-base"
-            >
-              {busy ? "Opening Google…" : "Continue with Google"}
-            </Button>
-
-            <div className="my-8 border-t border-white/20 relative">
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-950 px-4 text-sm text-gray-400 font-medium">
-                or
-              </span>
-            </div>
-
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid grid-cols-2 w-full bg-gradient-to-r from-white/5 to-white/10 border-2 border-white/20 p-1.5 rounded-xl shadow-lg">
                 <TabsTrigger 

@@ -85,7 +85,6 @@ type AuthContextValue = {
   loading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
   logOut: () => Promise<void>;
 };
 
@@ -155,17 +154,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           uid: generateUid(),
           email: normalizedEmail,
           displayName: normalizedEmail.split("@")[0] || "User",
-          photoURL: null,
-        };
-        writeStoredUser(nextUser);
-        setUser(nextUser);
-      },
-      signInWithGoogle: async () => {
-        // Placeholder Google sign-in: create a local user.
-        const nextUser: AuthUser = {
-          uid: generateUid(),
-          email: `google-user-${Math.random().toString(36).slice(2, 8)}@example.com`,
-          displayName: "Google User",
           photoURL: null,
         };
         writeStoredUser(nextUser);
