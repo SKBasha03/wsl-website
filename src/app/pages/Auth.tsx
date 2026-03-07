@@ -21,34 +21,6 @@ function getFriendlyAuthError(error: unknown): string {
         return "Password is too weak (try 6+ characters).";
       case "auth/email-already-in-use":
         return "That email is already registered. Try logging in.";
-      case "auth/operation-not-allowed":
-        return (
-          "Email/password sign-up is disabled for this Firebase project. " +
-          "Enable it in Firebase Console → Authentication → Sign-in method."
-        );
-      case "auth/unauthorized-domain":
-        return (
-          "This domain is not authorized for Firebase Auth. " +
-          "Add your site domain in Firebase Console → Authentication → Settings → Authorized domains."
-        );
-      case "auth/invalid-api-key":
-        return "Firebase API key is invalid. Re-check your VITE_FIREBASE_API_KEY value and redeploy.";
-      case "auth/configuration-not-found":
-        return (
-          "Firebase Auth is not properly configured for this project (auth/configuration-not-found). " +
-          "Re-copy the Web App config from Firebase Console → Project settings → Your apps, " +
-          "and ensure Authentication is enabled (Firebase Console → Authentication → Get started)."
-        );
-      case "auth/app-not-authorized":
-        return (
-          "This app/domain is not authorized to use Firebase Auth (auth/app-not-authorized). " +
-          "Check Firebase Auth Authorized domains, and ensure your API key isn’t restricted in Google Cloud."
-        );
-      case "auth/requests-to-this-api-identitytoolkit-method-are-blocked":
-        return (
-          "Requests are blocked by API key restrictions (Identity Toolkit). " +
-          "In Google Cloud Console → APIs & Services → Credentials, remove/reduce API key restrictions or allow Identity Toolkit API."
-        );
       case "auth/network-request-failed":
         return "Network error. Check your connection and try again.";
       case "auth/too-many-requests":

@@ -9,14 +9,11 @@
 
   Run `npm run dev` to start the development server.
 
-  ## Auth (Firebase)
+  ## Auth (Placeholder)
 
-  This project uses Firebase Authentication (Email/Password) for **register**, **login**, and **logout**.
+  This project currently uses a simple **local placeholder auth** (stored in `localStorage`) so the UI can run without any backend services.
 
-  1. Create a Firebase project in the Firebase console.
-  2. Add a Web App to get your config values.
-  3. Enable **Authentication → Sign-in method → Email/Password**.
-  4. Create `.env.local` in the project root and copy values from `.env.example`.
+  ## Deploying to Vercel
 
-  After that, restart `npm run dev`.
+  Note: This repo includes `vercel.json` to make client-side routes work with React Router (SPA fallback to `index.html`).
   
