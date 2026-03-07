@@ -377,14 +377,20 @@ const SOLD_OUT_PLAYER_IDS = new Set<string>([
   "def17",
   "def14",
   "mid10",
+  "def19",
+  "def2",
+  "fwd38",
+  "mid6",
+  "mid40",
+  "fwd39",
+  "def34",
+  "def33",
+  "fwd50",
+  "fwd42"
 ]);
 
 const IN_AUCTION_PLAYER_IDS = new Set<string>([
   "def11",
-  "def33",
-  "fwd42",
-  "fwd50",
-
 ]);
 
 const mockPlayers: Player[] = [
