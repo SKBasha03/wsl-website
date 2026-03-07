@@ -53,6 +53,7 @@ export function Auth() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user, loading, signIn, signUp } = useAuth();
+  const loginDisabled = true;
 
   const redirectTo = useMemo(() => {
     const redirect = searchParams.get("redirect");
@@ -103,6 +104,10 @@ export function Auth() {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+    if (loginDisabled) {
+      toast.error("Login is currently disabled.");
+      return;
+    }
     setBusy(true);
     try {
       await signIn(loginEmail.trim(), loginPassword);
@@ -194,10 +199,10 @@ export function Auth() {
                   </div>
                   <Button
                     type="submit"
-                    disabled={busy}
+                    disabled={busy || loginDisabled}
                     className="w-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-none font-bold h-11"
                   >
-                    {busy ? "Signing in…" : "Sign In"}
+                    {busy ? "Signing in…" : loginDisabled ? "Login Disabled" : "Sign In"}
                   </Button>
                 </form>
               </TabsContent>
