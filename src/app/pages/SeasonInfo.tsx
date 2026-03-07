@@ -1,6 +1,7 @@
-import { Calendar, Clock, MapPin, CheckCircle2, Trophy, ArrowRight } from "lucide-react";
+import { CheckCircle2, Trophy, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import { Progress } from "../components/ui/progress";
 import { Button } from "../components/ui/button";
 import { getNextDateMatches, parseMatchDate, getAllScheduledMatches } from "../lib/scheduleData";
@@ -84,21 +85,6 @@ const seasonMilestones: Milestone[] = [
   },
 ];
 
-function formatMatchDate(meta: string): { date: string; time: string } {
-  // Input format: "Monday | March 09, 2026"
-  const parts = meta.split("|").map((s) => s.trim());
-  const datePart = parts[1] || parts[0];
-  
-  // For now, assign times based on pattern (you can enhance this)
-  const times = ["19:00", "20:30", "18:00", "19:30"];
-  const randomTime = times[Math.floor(Math.random() * times.length)];
-  
-  return {
-    date: datePart,
-    time: randomTime,
-  };
-}
-
 const currentWeek = 24;
 const totalWeeks = 36;
 const progressPercentage = Math.round((currentWeek / totalWeeks) * 100);
@@ -170,29 +156,56 @@ export function SeasonInfo() {
               </Button>
             </Link>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             {upcomingMatches.length > 0 ? (
               upcomingMatches.map((match) => {
-                const { date, time } = formatMatchDate(match.meta);
+                const groupLetter = match.id.charAt(0);
+                const homeInitials = match.home.slice(0, 2).toUpperCase();
+                const awayInitials = match.away.slice(0, 2).toUpperCase();
                 return (
                   <div
                     key={match.id}
-                    className="rounded-lg border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors duration-200"
+                    className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all duration-300 will-change-transform before:pointer-events-none before:absolute before:inset-0 before:z-10 before:content-[''] before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent before:-translate-x-full before:transition-transform before:duration-700 hover:before:translate-x-full hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5"
                   >
-                    <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                      <Calendar className="h-3 w-3" />
-                      <span>{date}</span>
-                      <Clock className="h-3 w-3 ml-2" />
-                      <span>{time}</span>
-                    </div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-semibold">{match.home}</span>
-                      <span className="text-gray-400 text-sm">vs</span>
-                      <span className="text-white font-semibold text-right">{match.away}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <MapPin className="h-3 w-3" />
-                      <span>Group {match.id.charAt(0)} Match</span>
+                    {/* left accent stripe */}
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500/60 via-emerald-400/30 to-transparent rounded-l-xl" />
+
+                    <div className="pl-4 pr-4 py-4">
+                      {/* top row: label + group + status */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{match.label}</span>
+                        <span className="text-[10px] font-bold text-gray-600">·</span>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Group {groupLetter}</span>
+                        <div className="ml-auto">
+                          <Badge className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold text-[10px] px-2 py-0.5 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            Scheduled
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* teams row */}
+                      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="h-9 w-9 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                            <span className="text-white text-[11px] font-bold">{homeInitials}</span>
+                          </div>
+                          <span className="text-white font-bold text-sm truncate">{match.home}</span>
+                        </div>
+
+                        <div className="flex items-center justify-center">
+                          <div className="h-7 w-7 rounded-full bg-white/5 border border-white/15 flex items-center justify-center">
+                            <span className="text-[10px] font-black text-gray-400 tracking-tight">VS</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2.5 min-w-0 justify-end">
+                          <span className="text-white font-bold text-sm truncate text-right">{match.away}</span>
+                          <div className="h-9 w-9 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                            <span className="text-white text-[11px] font-bold">{awayInitials}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );

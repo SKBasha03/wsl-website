@@ -67,57 +67,27 @@ export function Layout() {
                 </span>
               </Link>
             <div className="ml-auto flex items-center gap-4">
-              <div className="flex gap-2">
-                <Link to="/">
-                  <Button
-                    variant={location.pathname === "/" ? "default" : "ghost"}
-                    className={location.pathname === "/" 
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-semibold" 
-                      : "text-white hover:bg-white/10 border-white/10"}
-                  >
-                    Home
-                  </Button>
-                </Link>
-                <Link to="/schedule">
-                  <Button
-                    variant={location.pathname === "/schedule" ? "default" : "ghost"}
-                    className={location.pathname === "/schedule" 
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-semibold" 
-                      : "text-white hover:bg-white/10 border-white/10"}
-                  >
-                    Schedule
-                  </Button>
-                </Link>
-                <Link to="/fixture">
-                  <Button
-                    variant={location.pathname === "/fixture" ? "default" : "ghost"}
-                    className={location.pathname === "/fixture" 
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-semibold" 
-                      : "text-white hover:bg-white/10 border-white/10"}
-                  >
-                    Fixture
-                  </Button>
-                </Link>
-                <Link to="/season-info">
-                  <Button
-                    variant={location.pathname === "/season-info" ? "default" : "ghost"}
-                    className={location.pathname === "/season-info" 
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-semibold" 
-                      : "text-white hover:bg-white/10 border-white/10"}
-                  >
-                    Season Info
-                  </Button>
-                </Link>
-                <Link to="/free-agents">
-                  <Button
-                    variant={location.pathname === "/free-agents" ? "default" : "ghost"}
-                    className={location.pathname === "/free-agents" 
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-semibold" 
-                      : "text-white hover:bg-white/10 border-white/10"}
-                  >
-                    Free Agents
-                  </Button>
-                </Link>
+              <div className="flex gap-1">
+                {([
+                  { to: "/", label: "Home" },
+                  { to: "/free-agents", label: "Free Agents" },
+                ] as const).map(({ to, label }) => {
+                  const isActive = location.pathname === to;
+                  return (
+                    <Link key={to} to={to}>
+                      <Button
+                        variant="ghost"
+                        className={`relative font-semibold transition-all duration-200 hover:scale-105 active:scale-95 ${
+                          isActive
+                            ? "bg-white/10 text-white border border-white/20 shadow-inner after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:w-4/5 after:rounded-full after:bg-white/60 after:content-['']"
+                            : "text-gray-400 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10"
+                        }`}
+                      >
+                        {label}
+                      </Button>
+                    </Link>
+                  );
+                })}
               </div>
 
               {/* Auth */}
@@ -134,16 +104,16 @@ export function Layout() {
                     </AvatarFallback>
                   </Avatar>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     onClick={handleLogout}
-                    className="border-white/30 bg-white/10 hover:bg-white/20 text-white font-semibold shadow-md hover:shadow-lg transition-all"
+                    className="border border-white/20 bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white font-semibold transition-all duration-200 hover:scale-105 active:scale-95"
                   >
                     Log out
                   </Button>
                 </div>
               ) : (
                 <Link to={`/auth?redirect=${encodeURIComponent(location.pathname || "/")}`}>
-                  <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-semibold">
+                  <Button className="border border-white/20 bg-white/10 hover:bg-white/20 text-white font-semibold shadow-md transition-all duration-200 hover:scale-105 active:scale-95 hover:border-white/30">
                     Log in
                   </Button>
                 </Link>
@@ -153,7 +123,7 @@ export function Layout() {
               {location.pathname === "/free-agents" && user && (
                 <Sheet>
                   <SheetTrigger asChild>
-                    <Button variant="outline" className="relative border-white/30 bg-white/10 hover:bg-white/20 text-white shadow-md hover:shadow-lg transition-all">
+                    <Button variant="ghost" className="relative border border-white/20 bg-white/5 hover:bg-white/15 text-white transition-all duration-200 hover:scale-105 active:scale-95">
                       <ShoppingCart className="h-5 w-5" />
                       {cart.length > 0 && (
                         <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 border-0 font-bold shadow-lg shadow-purple-500/30">

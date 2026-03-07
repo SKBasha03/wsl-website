@@ -67,22 +67,36 @@ export function Schedule() {
   );
 
   // Calculate match statistics
-  const groupStageMatches = getAllScheduledMatches();
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const completedMatches = groupStageMatches.filter((match) => {
-    const matchDate = parseMatchDate(match.meta);
-    return matchDate && matchDate < today;
-  }).length;
-  
-  const upcomingMatches = groupStageMatches.filter((match) => {
-    const matchDate = parseMatchDate(match.meta);
-    return matchDate && matchDate >= today;
-  }).length;
-  
-  // Total tournament matches: Group Stage (36) + WCL (15) + WEL (15) + WSL (1) = 67
-  const totalMatches = 67;
+  // NOTE: We currently have dated fixtures for the WCL group stage only.
+  // The tournament total includes later-stage matches that don't have dates yet,
+  // so we count those as "upcoming" until they're scheduled.
+  const TOTAL_TOURNAMENT_MATCHES = 67;
+
+  const groupStageMatches = useMemo(() => getAllScheduledMatches(), []);
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
+  const completedMatches = useMemo(() => {
+    return groupStageMatches.filter((match) => {
+      const matchDate = parseMatchDate(match.meta);
+      return matchDate && matchDate < today;
+    }).length;
+  }, [groupStageMatches, today]);
+
+  const upcomingMatches = useMemo(() => {
+    const upcomingDated = groupStageMatches.filter((match) => {
+      const matchDate = parseMatchDate(match.meta);
+      return matchDate && matchDate >= today;
+    }).length;
+
+    const remainingUndated = Math.max(0, TOTAL_TOURNAMENT_MATCHES - groupStageMatches.length);
+    return upcomingDated + remainingUndated;
+  }, [groupStageMatches, today]);
+
+  const totalMatches = TOTAL_TOURNAMENT_MATCHES;
 
   const activeLeagueData = allLeaguesData[activeLeague];
 
@@ -166,6 +180,57 @@ export function Schedule() {
         {(["wcl", "wel", "wsl"] as const).map((league) => {
           const leagueGroups = allLeaguesData[league];
           const leagueName = league === "wcl" ? "Wano Continental League" : league === "wel" ? "Wano Evolution League" : "Wano Super League";
+
+          const leagueMatches = leagueGroups.flatMap((g) => g.matches);
+
+          const sortedMatches = [...leagueMatches].sort((a, b) => {
+            const dateA = parseMatchDate(a.meta);
+            const dateB = parseMatchDate(b.meta);
+
+            if (dateA && dateB) return dateA.getTime() - dateB.getTime();
+            if (dateA && !dateB) return -1;
+            if (!dateA && dateB) return 1;
+            return a.id.localeCompare(b.id);
+          });
+
+          const matchesByDate = sortedMatches.reduce(
+            (acc, match) => {
+              const matchDate = parseMatchDate(match.meta);
+              const key = matchDate ? matchDate.toISOString().slice(0, 10) : "tbd";
+
+              const bucket = acc.get(key);
+              if (bucket) {
+                bucket.matches.push(match);
+                return acc;
+              }
+
+              acc.set(key, {
+                key,
+                date: matchDate,
+                title: matchDate ? match.meta : "To Be Announced",
+                matches: [match],
+              });
+
+              return acc;
+            },
+            new Map<
+              string,
+              {
+                key: string;
+                date: Date | null;
+                title: string;
+                matches: ScheduleMatch[];
+              }
+            >(),
+          );
+
+          const dateSections = Array.from(matchesByDate.values()).sort((a, b) => {
+            if (a.date && b.date) return a.date.getTime() - b.date.getTime();
+            if (a.date && !b.date) return -1;
+            if (!a.date && b.date) return 1;
+            return a.key.localeCompare(b.key);
+          });
+
           return (
             <TabsContent key={league} value={league} className="space-y-6">
               <div className="text-center mb-6">
@@ -174,56 +239,103 @@ export function Schedule() {
               </div>
 
               <div className="space-y-6">
-                {leagueGroups.map((group) => (
-                  <Card key={group.group} className="bg-white/5 border-white/10 backdrop-blur-sm">
-                    <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-                          <span className="text-white font-bold text-lg">{group.group}</span>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold text-lg">Group {group.group}</div>
-                          <div className="text-gray-400 text-xs">{group.matches.length} matches scheduled</div>
-                        </div>
-                      </div>
-
-                      {league !== "wcl" && (
-                        <Badge className="w-fit bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold px-3 py-1">Coming Soon</Badge>
-                      )}
-                    </CardHeader>
-
-                    <CardContent className="space-y-2">
-                      {group.matches.map((match) => (
-                        <div
-                          key={match.id}
-                          className={`rounded-lg border px-4 py-3 transition-all duration-200 ${
-                            match.status === "coming-soon"
-                              ? "border-white/10 bg-white/5 opacity-60"
-                              : "border-white/10 bg-white/5 hover:bg-white/10"
-                          }`}
-                        >
-                          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <div className="text-xs text-gray-400 font-semibold">{match.label}</div>
-                                {match.status === "coming-soon" ? (
-                                  <Badge className="bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold text-xs">Coming Soon</Badge>
-                                ) : (
-                                  <Badge className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold text-xs flex items-center gap-1">
-                                    <span className="w-1 h-1 rounded-full bg-emerald-400"></span>
-                                    Scheduled
-                                  </Badge>
-                                )}
-                              </div>
-
-                              <div className="text-white text-base font-semibold truncate mb-1">
-                                {match.home} <span className="text-gray-400 font-normal">vs</span> {match.away}
-                              </div>
-                              <div className="text-xs text-gray-400">{match.meta}</div>
-                            </div>
+                {dateSections.map((section) => (
+                  <Card
+                    key={section.key}
+                    className="group bg-white/5 border-white/10 backdrop-blur-sm transition-colors duration-200 hover:bg-white/10 hover:border-white/20"
+                  >
+                    <CardContent className="p-0">
+                      <div className="flex">
+                        <div className="w-9 sm:w-10 shrink-0 border-r border-white/10 bg-white/5 flex items-center justify-center transition-colors duration-200 group-hover:bg-white/10">
+                          <div className="transform -rotate-90 whitespace-nowrap text-white font-semibold text-[10px] sm:text-xs transition-colors duration-200 group-hover:text-white">
+                            {section.title}
                           </div>
                         </div>
-                      ))}
+
+                        <div className="flex-1 p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="text-gray-400 text-xs font-semibold">{section.matches.length} matches</div>
+                            {league !== "wcl" && (
+                              <Badge className="w-fit bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold px-3 py-1">Coming Soon</Badge>
+                            )}
+                          </div>
+
+                          <div className="space-y-3">
+                            {section.matches.map((match) => {
+                              const groupLetter = match.id.charAt(0);
+                              const homeInitials = match.home.slice(0, 2).toUpperCase();
+                              const awayInitials = match.away.slice(0, 2).toUpperCase();
+                              const isPast = (() => {
+                                const d = parseMatchDate(match.meta);
+                                return d && d < today;
+                              })();
+
+                              return (
+                                <div
+                                  key={match.id}
+                                  className={`relative overflow-hidden rounded-xl border transition-all duration-300 will-change-transform before:pointer-events-none before:absolute before:inset-0 before:z-10 before:content-[''] before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent before:-translate-x-full before:transition-transform before:duration-700 hover:before:translate-x-full hover:-translate-y-0.5 ${
+                                    match.status === "coming-soon"
+                                      ? "border-white/10 bg-white/5 opacity-60"
+                                      : isPast
+                                        ? "border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20"
+                                        : "border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20"
+                                  }`}
+                                >
+                                  {/* left accent stripe */}
+                                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500/60 via-emerald-400/30 to-transparent rounded-l-xl" />
+
+                                  <div className="pl-4 pr-4 py-4">
+                                    {/* top row: label + group + status */}
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{match.label}</span>
+                                      <span className="text-[10px] font-bold text-gray-600">·</span>
+                                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Group {groupLetter}</span>
+                                      <div className="ml-auto">
+                                        {match.status === "coming-soon" ? (
+                                          <Badge className="bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold text-[10px] px-2 py-0.5">Coming Soon</Badge>
+                                        ) : isPast ? (
+                                          <Badge className="bg-gray-500/20 border border-gray-400/30 text-gray-300 font-semibold text-[10px] px-2 py-0.5">Completed</Badge>
+                                        ) : (
+                                          <Badge className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold text-[10px] px-2 py-0.5 flex items-center gap-1">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                            Scheduled
+                                          </Badge>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {/* teams row — grid keeps VS always centred */}
+                                    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                                      {/* home team */}
+                                      <div className="flex items-center gap-2.5 min-w-0">
+                                        <div className="h-9 w-9 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                                          <span className="text-white text-[11px] font-bold">{homeInitials}</span>
+                                        </div>
+                                        <span className="text-white font-bold text-sm truncate">{match.home}</span>
+                                      </div>
+
+                                      {/* vs badge */}
+                                      <div className="flex items-center justify-center">
+                                        <div className="h-7 w-7 rounded-full bg-white/5 border border-white/15 flex items-center justify-center">
+                                          <span className="text-[10px] font-black text-gray-400 tracking-tight">VS</span>
+                                        </div>
+                                      </div>
+
+                                      {/* away team */}
+                                      <div className="flex items-center gap-2.5 min-w-0 justify-end">
+                                        <span className="text-white font-bold text-sm truncate text-right">{match.away}</span>
+                                        <div className="h-9 w-9 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                                          <span className="text-white text-[11px] font-bold">{awayInitials}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
