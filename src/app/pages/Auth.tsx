@@ -52,8 +52,7 @@ function getFriendlyAuthError(error: unknown): string {
 export function Auth() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user, loading, signIn, signUp } = useAuth();
-  const loginDisabled = true;
+  const { user, loading, signUp } = useAuth();
 
   const redirectTo = useMemo(() => {
     const redirect = searchParams.get("redirect");
@@ -101,25 +100,6 @@ export function Auth() {
       </div>
     );
   }
-
-  const handleLogin = async (e: FormEvent) => {
-    e.preventDefault();
-    if (loginDisabled) {
-      toast.error("Login is currently disabled.");
-      return;
-    }
-    setBusy(true);
-    try {
-      await signIn(loginEmail.trim(), loginPassword);
-      toast.success("Logged in successfully!");
-      navigate(redirectTo, { replace: true });
-    } catch (err) {
-      console.error("[auth] login failed", err);
-      toast.error(getFriendlyAuthError(err));
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -170,7 +150,7 @@ export function Auth() {
               </TabsList>
 
               <TabsContent value="login" className="mt-8">
-                <form onSubmit={handleLogin} className="space-y-5">
+                <form className="space-y-5">
                   <div className="space-y-2">
                     <Label className="text-white font-semibold" htmlFor="login-email">Email</Label>
                     <Input
@@ -197,13 +177,6 @@ export function Auth() {
                       className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
                     />
                   </div>
-                  <Button
-                    type="submit"
-                    disabled={busy || loginDisabled}
-                    className="w-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-none font-bold h-11"
-                  >
-                    {busy ? "Signing in…" : loginDisabled ? "Login Disabled" : "Sign In"}
-                  </Button>
                 </form>
               </TabsContent>
 
