@@ -1,152 +1,109 @@
+import { useMemo } from "react";
 import { Link } from "react-router";
 import { Button } from "../components/ui/button";
-import { Trophy, Users, Calendar, ArrowRight, CheckCircle2, Clock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Calendar, CheckCircle2, Clock, ChevronDown } from "lucide-react";
 import { getAllScheduledMatches, parseMatchDate } from "../lib/scheduleData";
 
 export function Home() {
-  // Calculate match statistics
-  const groupStageMatches = getAllScheduledMatches();
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const completedMatches = groupStageMatches.filter((match) => {
-    const matchDate = parseMatchDate(match.meta);
-    return matchDate && matchDate < today;
-  }).length;
-  
-  const upcomingMatches = groupStageMatches.filter((match) => {
-    const matchDate = parseMatchDate(match.meta);
-    return matchDate && matchDate >= today;
-  }).length;
-  
-  // Total tournament matches: Group Stage (36) + WCL (15) + WEL (15) + WSL (1) = 67
+  const allMatches = useMemo(() => getAllScheduledMatches(), []);
+  const today = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; }, []);
+
+  const completedMatches = useMemo(
+    () => allMatches.filter(m => { const d = parseMatchDate(m.meta); return d && d < today; }).length,
+    [allMatches, today]
+  );
+  const upcomingDated = useMemo(
+    () => allMatches.filter(m => { const d = parseMatchDate(m.meta); return d && d >= today; }).length,
+    [allMatches, today]
+  );
   const totalMatches = 67;
+  const upcomingMatches = upcomingDated + Math.max(0, 67 - allMatches.length);
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-10">
-      {/* Hero Section */}
-      <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-wide text-white mb-4">
-          Welcome to Wano Super League
-        </h1>
-        <p className="text-xl text-gray-400 mb-8 max-w-2xl">
-          Build your ultimate squad from our free agents marketplace. Discover top talent across all positions and create your dream team.
-        </p>
-        <Link to="/free-agents">
-          <Button size="lg" className="bg-white/10 hover:bg-white/15 text-white border border-white/10">
-            Browse Free Agents
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </Link>
-      </div>
+    <div className="w-full">
 
-      {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-3 text-white">
-              <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-                <Calendar className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold">Total Matches</p>
-                <p className="text-xs text-gray-400 font-normal mt-0.5">Entire tournament</p>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-white mb-1">{totalMatches}</p>
-            <p className="text-gray-400 text-sm">All Stages Combined</p>
-          </CardContent>
-        </Card>
+      {/* ── CINEMATIC HERO ──────────────────────────────────── */}
+      <div className="relative min-h-[92vh] flex flex-col items-center justify-center overflow-hidden px-4 text-center">
 
-        <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-white">
-                <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-                  <CheckCircle2 className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold">Completed Matches</p>
-                  <p className="text-xs text-gray-400 font-normal mt-0.5">Matches played</p>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-4xl font-bold text-white mb-1">{completedMatches}</p>
-              <p className="text-gray-400 text-sm">Finished</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-white">
-                <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-                  <Clock className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold">Upcoming Matches</p>
-                  <p className="text-xs text-gray-400 font-normal mt-0.5">Scheduled matches</p>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-4xl font-bold text-white mb-1">{upcomingMatches}</p>
-              <p className="text-gray-400 text-sm">To Be Played</p>
-            </CardContent>
-          </Card>
+        {/* Deep radial glow */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="w-[800px] h-[800px] rounded-full bg-white/[0.025] blur-[140px]" />
+        </div>
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="w-[350px] h-[350px] rounded-full bg-white/[0.045] blur-[70px]" />
         </div>
 
-      {/* Featured Content */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Get Started</h2>
-          <p className="text-gray-400">Everything you need to build your ultimate squad</p>
+        {/* Subtle scan lines feel */}
+        <div className="pointer-events-none absolute top-[20%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="pointer-events-none absolute top-[80%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+
+        {/* Corner marks */}
+        <div className="pointer-events-none absolute top-8 left-8 w-8 h-8 border-t border-l border-white/10" />
+        <div className="pointer-events-none absolute top-8 right-8 w-8 h-8 border-t border-r border-white/10" />
+        <div className="pointer-events-none absolute bottom-8 left-8 w-8 h-8 border-b border-l border-white/10" />
+        <div className="pointer-events-none absolute bottom-8 right-8 w-8 h-8 border-b border-r border-white/10" />
+
+        <div className="relative z-10 flex flex-col items-center gap-6 max-w-5xl">
+          {/* Live badge */}
+          <Badge className="bg-white/[0.06] border border-white/[0.12] text-white/50 text-[10px] font-bold tracking-[0.35em] uppercase px-5 py-1.5 rounded-full">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-2.5 animate-pulse" />
+            Season 1 · Now Live
+          </Badge>
+
+          {/* Main title */}
+          <div className="space-y-1">
+            <p className="text-[10px] md:text-xs tracking-[0.6em] uppercase text-white/20 font-bold">Est. 2026</p>
+            <h1 className="text-[clamp(4rem,15vw,11rem)] font-black tracking-[-0.03em] text-white leading-[0.82]">
+              WANO
+            </h1>
+            <h2 className="text-[clamp(0.9rem,3.5vw,2.2rem)] font-black tracking-[0.25em] text-white/20 leading-none">
+              SUPER LEAGUE
+            </h2>
+          </div>
+
+          {/* Tagline */}
+          <p className="text-base md:text-xl text-white/35 max-w-md leading-relaxed font-medium mt-2">
+            Where legends are made. Every match, every transfer, every triumph.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-3 justify-center mt-2">
+            <Link to="/schedule">
+              <Button className="bg-white text-black hover:bg-white/90 hover:scale-105 active:scale-95 transition-all duration-200 font-black px-8 h-12 text-xs tracking-[0.15em]">
+                VIEW SCHEDULE
+              </Button>
+            </Link>
+            <Link to="/season-info">
+              <Button className="bg-transparent border border-white/15 text-white/60 hover:text-white hover:bg-white/8 hover:border-white/25 hover:scale-105 active:scale-95 transition-all duration-200 font-semibold px-8 h-12 text-xs tracking-wide">
+                SEASON INFO
+              </Button>
+            </Link>
+          </div>
+
+          {/* Stat pills */}
+          <div className="flex flex-wrap gap-3 justify-center mt-4">
+            {[
+              { icon: Calendar, label: "Matches", value: totalMatches },
+              { icon: CheckCircle2, label: "Played", value: completedMatches },
+              { icon: Clock, label: "Remaining", value: upcomingMatches },
+            ].map(({ icon: Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.08] rounded-full px-5 py-2">
+                <Icon className="h-3.5 w-3.5 text-white/30" />
+                <span className="text-white font-black text-sm">{value}</span>
+                <span className="text-white/30 text-xs font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="max-w-3xl mx-auto">
-          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-semibold text-white">How It Works</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-4 p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center font-semibold text-sm">
-                  1
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-1">Browse Free Agents</h4>
-                  <p className="text-gray-400 text-sm">
-                    Explore players by position - Goalkeepers, Defenders, Midfielders, and Forwards
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center font-semibold text-sm">
-                  2
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-1">Add to Your Squad</h4>
-                  <p className="text-gray-400 text-sm">
-                    Select your favorite players and add them to your cart
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center font-semibold text-sm">
-                  3
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-1">Share Your Team</h4>
-                  <p className="text-gray-400 text-sm">
-                    Copy your squad list and share it with league members
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+
+        {/* Scroll cue */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/15 animate-bounce">
+          <ChevronDown className="h-5 w-5" />
         </div>
       </div>
+
     </div>
   );
 }
+

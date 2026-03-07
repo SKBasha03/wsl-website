@@ -136,7 +136,7 @@ export function Auth() {
       <div className="max-w-lg mx-auto">
         {/* Hero Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl mb-3 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white drop-shadow-2xl mb-3 leading-tight">
             Account
           </h1>
           <p className="text-lg text-gray-300">Sign in to manage your squad and build your dream team</p>
@@ -149,16 +149,16 @@ export function Auth() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="w-full items-stretch justify-between bg-gradient-to-r from-white/5 to-white/10 border-2 border-white/20 p-1.5 rounded-xl shadow-lg">
+              <TabsList className="w-full items-stretch justify-between bg-white/5 border border-white/20 p-1.5 rounded-xl shadow-lg">
                 <TabsTrigger 
                   value="login"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/30 text-gray-300 font-bold rounded-lg"
+                  className="data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border data-[state=active]:border-white/30 data-[state=active]:shadow-md text-gray-400 font-bold rounded-lg transition-all duration-200 hover:text-white"
                 >
                   Login
                 </TabsTrigger>
                 <TabsTrigger 
                   value="register"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/30 text-gray-300 font-bold rounded-lg"
+                  className="data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:border data-[state=active]:border-white/30 data-[state=active]:shadow-md text-gray-400 font-bold rounded-lg transition-all duration-200 hover:text-white"
                 >
                   Register
                 </TabsTrigger>
@@ -176,7 +176,7 @@ export function Auth() {
                       placeholder="you@example.com"
                       autoComplete="email"
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
                     />
                   </div>
                   <div className="space-y-2">
@@ -189,13 +189,13 @@ export function Auth() {
                       placeholder="••••••••"
                       autoComplete="current-password"
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
                     />
                   </div>
                   <Button
                     type="submit"
                     disabled={busy}
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-bold h-11"
+                    className="w-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-none font-bold h-11"
                   >
                     {busy ? "Signing in…" : "Sign In"}
                   </Button>
@@ -214,7 +214,7 @@ export function Auth() {
                       placeholder="you@example.com"
                       autoComplete="email"
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
                     />
                   </div>
                   <div className="space-y-2">
@@ -227,14 +227,14 @@ export function Auth() {
                       placeholder="Create a strong password"
                       autoComplete="new-password"
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-11 font-medium focus:border-white/40 focus:ring-2 focus:ring-white/10"
                     />
                     <p className="text-xs text-gray-400 font-medium">Minimum 6 characters required.</p>
                   </div>
                   <Button
                     type="submit"
                     disabled={busy}
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20 border-0 font-bold h-11"
+                    className="w-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-none font-bold h-11"
                   >
                     {busy ? "Creating account…" : "Create Account"}
                   </Button>

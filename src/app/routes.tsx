@@ -6,6 +6,7 @@ import { Auth } from "./pages/Auth";
 import { Schedule } from "./pages/Schedule";
 import { Fixture } from "./pages/Fixture";
 import { SeasonInfo } from "./pages/SeasonInfo";
+import { Transfers } from "./pages/Transfers";
 
 function LeagueRedirect() {
   return <Navigate to="/" replace />;
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "fixture", Component: Fixture },
       { path: "season-info", Component: SeasonInfo },
       { path: "free-agents", Component: FreeAgents },
+      { path: "transfers", Component: Transfers },
       { path: "auth", Component: Auth },
     ],
   },

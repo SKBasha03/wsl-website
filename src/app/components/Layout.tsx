@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -14,6 +15,13 @@ export function Layout() {
   const navigate = useNavigate();
   const { cart, removeFromCart, clearCart } = useCart();
   const { user, logOut } = useAuth();
+
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const getPositionColor = (position: string) => {
     switch (position) {
@@ -50,40 +58,68 @@ export function Layout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-zinc-950 to-black">
       {/* Navigation */}
-      <nav className="bg-gradient-to-r from-black/60 via-purple-950/20 to-black/60 backdrop-blur-xl border-b border-white/20 shadow-lg shadow-black/50">
+      <nav
+        className={`sticky top-0 z-50 transition-all duration-500 ${
+          scrolled
+            ? "bg-black/85 backdrop-blur-2xl border-b border-white/30 shadow-[0_4px_24px_0_rgba(255,255,255,0.07)]"
+            : "bg-black/50 backdrop-blur-xl border-b border-white/20 shadow-[0_2px_16px_0_rgba(255,255,255,0.05)]"
+        }`}
+      >
+        {/* Top shimmer accent line */}
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16">
-            <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-white hover:opacity-80 transition-opacity">
+          <div className={`flex items-center transition-all duration-500 ${scrolled ? "h-14" : "h-16"}`}>
+
+            {/* Logo */}
+            <Link to="/" className="group flex items-center gap-2 font-bold text-white transition-all duration-300">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-white/15 blur-2xl scale-[2.5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <img
                   src="/logo.png"
                   alt="Wano Super League"
-                  className="h-20 w-15 object-contain"
+                  className={`object-contain transition-all duration-500 group-hover:scale-110 w-auto ${scrolled ? "h-14" : "h-20"}`}
                   loading="eager"
                   decoding="async"
                   fetchPriority="high"
                 />
-                <span>
-                  Wano <span className="text-gray-200">Super League</span>
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-2xl transition-all duration-300 group-hover:tracking-wider">
+                  Wano{" "}
+                  <span className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                    Super League
+                  </span>
                 </span>
-              </Link>
+                <span className="text-[9px] font-medium tracking-[0.2em] text-white/30 uppercase group-hover:text-white/50 transition-colors duration-300">
+                  Season 1 · 2025/26
+                </span>
+              </div>
+            </Link>
+
             <div className="ml-auto flex items-center gap-4">
               <div className="flex gap-1">
                 {([
-                  { to: "/", label: "Home" },
-                  { to: "/free-agents", label: "Free Agents" },
+                  { to: "/", label: "HOME" },
+                  { to: "/transfers", label: "TRANSFERS" },
                 ] as const).map(({ to, label }) => {
                   const isActive = location.pathname === to;
                   return (
                     <Link key={to} to={to}>
                       <Button
                         variant="ghost"
-                        className={`relative font-semibold transition-all duration-200 hover:scale-105 active:scale-95 ${
-                          isActive
-                            ? "bg-white/10 text-white border border-white/20 shadow-inner after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:w-4/5 after:rounded-full after:bg-white/60 after:content-['']"
-                            : "text-gray-400 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10"
-                        }`}
+                        className={`relative overflow-hidden text-xs font-semibold transition-all duration-300 hover:scale-105 active:scale-95
+                          before:content-[''] before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent before:transition-transform before:duration-500 hover:before:translate-x-full
+                          ${
+                            isActive
+                              ? "bg-white/10 text-white border border-white/20 shadow-md shadow-white/5"
+                              : "text-gray-400 hover:text-white border border-transparent hover:border-white/15 hover:bg-white/5"
+                          }`}
                       >
                         {label}
+                        {isActive && (
+                          <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-4/5 rounded-full bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+                        )}
                       </Button>
                     </Link>
                   );
@@ -99,7 +135,7 @@ export function Layout() {
                       alt={user.displayName ?? "Profile"}
                       className="object-cover"
                     />
-                    <AvatarFallback className="bg-gradient-to-br from-purple-500/30 to-pink-500/30 text-white text-xs font-bold">
+                    <AvatarFallback className="bg-white/10 text-white text-xs font-bold">
                       {(user.displayName ?? user.email ?? "U").trim().slice(0, 1).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>

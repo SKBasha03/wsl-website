@@ -22,7 +22,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
   const isUnavailable = isSoldOut || isInAuction;
   const showSoldOutStyling = isSoldOut && !isInCart;
   const showAuctionStyling = isInAuction && !isInCart;
-  const isLocalCardImage = player.image.toLowerCase().includes("/assets/") && player.image.toLowerCase().endsWith(".png");
+  const isLocalCardImage = !/^https?:\/\//i.test(player.image);
 
   const cardGradient = showAuctionStyling
     ? "from-emerald-900/40 via-emerald-950/30 to-black/90"
@@ -82,7 +82,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
           ? "opacity-60 grayscale border-white/10"
           : showAuctionStyling
             ? "border-emerald-400/40 shadow-emerald-500/20"
-            : "border-white/20 hover:border-white/30 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
+            : "border-white/20 hover:border-white/30 hover:scale-105 hover:shadow-2xl hover:shadow-white/10"
       }`}
       style={{ contentVisibility: "auto", containIntrinsicSize: "360px 520px" }}
     >
@@ -150,7 +150,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
                 ? "bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-600 hover:to-gray-700 cursor-not-allowed border-0"
                 : showAuctionStyling
                   ? "bg-gradient-to-r from-emerald-600/40 to-green-600/40 text-emerald-100 hover:from-emerald-600/40 hover:to-green-600/40 cursor-not-allowed border-emerald-400/30"
-                  : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-purple-500/30 border-0"
+                  : "bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-105 active:scale-95 shadow-none"
           }`}
         >
           {isInCart ? (
