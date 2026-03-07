@@ -149,16 +149,16 @@ export function Auth() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid grid-cols-2 w-full bg-gradient-to-r from-white/5 to-white/10 border-2 border-white/20 p-1.5 rounded-xl shadow-lg">
+              <TabsList className="grid grid-cols-2 w-full justify-items-stretch bg-gradient-to-r from-white/5 to-white/10 border-2 border-white/20 p-1.5 rounded-xl shadow-lg">
                 <TabsTrigger 
                   value="login"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/30 text-gray-300 font-bold rounded-lg"
+                  className="w-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/30 text-gray-300 font-bold rounded-lg"
                 >
                   Login
                 </TabsTrigger>
                 <TabsTrigger 
                   value="register"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/30 text-gray-300 font-bold rounded-lg"
+                  className="w-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/30 text-gray-300 font-bold rounded-lg"
                 >
                   Register
                 </TabsTrigger>
