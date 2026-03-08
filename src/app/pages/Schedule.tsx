@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { CalendarDays, Flag, Users, CheckCircle2, Clock } from "lucide-react";
+import { CalendarDays, CheckCircle2, Clock } from "lucide-react";
 import { getAllScheduledMatches, parseMatchDate, type ScheduleMatch, type GroupSchedule } from "../lib/scheduleData";
 
 type LeagueKey = "wcl" | "wel" | "wsl";
@@ -35,7 +35,6 @@ function buildLeagueData(league: LeagueKey): GroupSchedule[] {
   const groups: GroupSchedule["group"][] = ["A", "B", "C", "D", "E", "F"];
 
   if (league === "wcl") {
-    // Wano Continental League shows Group Stage matches
     const allMatches = getAllScheduledMatches();
     return groups.map((group) => ({
       group,
@@ -43,15 +42,10 @@ function buildLeagueData(league: LeagueKey): GroupSchedule[] {
     }));
   }
 
-  // WEL and WSL will show coming soon placeholders for now
-  const isComingSoon = true;
-  return groups.map((group) => {
-    const teams = isComingSoon ? ["TBD", "TBD", "TBD", "TBD"] : [`${group}1`, `${group}2`, `${group}3`, `${group}4`];
-    return {
-      group,
-      matches: generateSixMatches(group, teams, "coming-soon"),
-    };
-  });
+  return groups.map((group) => ({
+    group,
+    matches: generateSixMatches(group, ["TBD", "TBD", "TBD", "TBD"], "coming-soon"),
+  }));
 }
 
 export function Schedule() {
@@ -66,10 +60,6 @@ export function Schedule() {
     [],
   );
 
-  // Calculate match statistics
-  // NOTE: We currently have dated fixtures for the WCL group stage only.
-  // The tournament total includes later-stage matches that don't have dates yet,
-  // so we count those as "upcoming" until they're scheduled.
   const TOTAL_TOURNAMENT_MATCHES = 67;
 
   const groupStageMatches = useMemo(() => getAllScheduledMatches(), []);
@@ -97,8 +87,6 @@ export function Schedule() {
   }, [groupStageMatches, today]);
 
   const totalMatches = TOTAL_TOURNAMENT_MATCHES;
-
-  const activeLeagueData = allLeaguesData[activeLeague];
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-16">
@@ -156,20 +144,20 @@ export function Schedule() {
       <Tabs defaultValue="wcl" value={activeLeague} onValueChange={(v) => setActiveLeague(v as LeagueKey)} className="space-y-8">
         <div className="flex justify-center">
           <TabsList className="bg-white/5 border border-white/10 p-1 h-12 rounded-lg">
-            <TabsTrigger 
-              value="wcl" 
+            <TabsTrigger
+              value="wcl"
               className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 font-semibold px-6 h-9 rounded-md transition-all duration-200"
             >
               Wano Continental League
             </TabsTrigger>
-            <TabsTrigger 
-              value="wel" 
+            <TabsTrigger
+              value="wel"
               className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 font-semibold px-6 h-9 rounded-md transition-all duration-200"
             >
               Wano Evolution League
             </TabsTrigger>
-            <TabsTrigger 
-              value="wsl" 
+            <TabsTrigger
+              value="wsl"
               className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 font-semibold px-6 h-9 rounded-md transition-all duration-200"
             >
               Wano Super League
@@ -179,14 +167,18 @@ export function Schedule() {
 
         {(["wcl", "wel", "wsl"] as const).map((league) => {
           const leagueGroups = allLeaguesData[league];
-          const leagueName = league === "wcl" ? "Wano Continental League" : league === "wel" ? "Wano Evolution League" : "Wano Super League";
+          const leagueName =
+            league === "wcl"
+              ? "Wano Continental League"
+              : league === "wel"
+                ? "Wano Evolution League"
+                : "Wano Super League";
 
           const leagueMatches = leagueGroups.flatMap((g) => g.matches);
 
           const sortedMatches = [...leagueMatches].sort((a, b) => {
             const dateA = parseMatchDate(a.meta);
             const dateB = parseMatchDate(b.meta);
-
             if (dateA && dateB) return dateA.getTime() - dateB.getTime();
             if (dateA && !dateB) return -1;
             if (!dateA && dateB) return 1;
@@ -213,15 +205,7 @@ export function Schedule() {
 
               return acc;
             },
-            new Map<
-              string,
-              {
-                key: string;
-                date: Date | null;
-                title: string;
-                matches: ScheduleMatch[];
-              }
-            >(),
+            new Map<string, { key: string; date: Date | null; title: string; matches: ScheduleMatch[] }>(),
           );
 
           const dateSections = Array.from(matchesByDate.values()).sort((a, b) => {
@@ -256,7 +240,9 @@ export function Schedule() {
                           <div className="flex items-center justify-between mb-3">
                             <div className="text-gray-400 text-xs font-semibold">{section.matches.length} matches</div>
                             {league !== "wcl" && (
-                              <Badge className="w-fit bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold px-3 py-1">Coming Soon</Badge>
+                              <Badge className="w-fit bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold px-3 py-1">
+                                Coming Soon
+                              </Badge>
                             )}
                           </div>
 
@@ -287,16 +273,20 @@ export function Schedule() {
                                   <div className="pl-4 pr-4 py-4">
                                     {/* top row: label + group + status */}
                                     <div className="flex items-center gap-2 mb-3">
-                                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{match.label}</span>
-                                      <span className="text-[10px] font-bold text-gray-600">·</span>
-                                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Group {groupLetter}</span>
+                                      <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">{match.label}</span>
+                                      <span className="text-xs font-bold text-gray-600">·</span>
+                                      <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Group {groupLetter}</span>
                                       <div className="ml-auto">
                                         {match.status === "coming-soon" ? (
-                                          <Badge className="bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold text-[10px] px-2 py-0.5">Coming Soon</Badge>
+                                          <Badge className="bg-blue-500/20 border border-blue-400/30 text-blue-200 font-semibold text-xs px-2 py-0.5">
+                                            Coming Soon
+                                          </Badge>
                                         ) : isPast ? (
-                                          <Badge className="bg-gray-500/20 border border-gray-400/30 text-gray-300 font-semibold text-[10px] px-2 py-0.5">Completed</Badge>
+                                          <Badge className="bg-gray-500/20 border border-gray-400/30 text-gray-300 font-semibold text-xs px-2 py-0.5">
+                                            Completed
+                                          </Badge>
                                         ) : (
-                                          <Badge className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold text-[10px] px-2 py-0.5 flex items-center gap-1">
+                                          <Badge className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold text-xs px-2 py-0.5 flex items-center gap-1">
                                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                                             Scheduled
                                           </Badge>
@@ -304,29 +294,26 @@ export function Schedule() {
                                       </div>
                                     </div>
 
-                                    {/* teams row — grid keeps VS always centred */}
+                                    {/* teams row */}
                                     <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                                      {/* home team */}
-                                      <div className="flex items-center gap-2.5 min-w-0">
-                                        <div className="h-9 w-9 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                                          <span className="text-white text-[11px] font-bold">{homeInitials}</span>
-                                        </div>
-                                        <span className="text-white font-bold text-sm truncate">{match.home}</span>
-                                      </div>
-
-                                      {/* vs badge */}
-                                      <div className="flex items-center justify-center">
-                                        <div className="h-7 w-7 rounded-full bg-white/5 border border-white/15 flex items-center justify-center">
-                                          <span className="text-[10px] font-black text-gray-400 tracking-tight">VS</span>
-                                        </div>
-                                      </div>
-
-                                      {/* away team */}
                                       <div className="flex items-center gap-2.5 min-w-0 justify-end">
-                                        <span className="text-white font-bold text-sm truncate text-right">{match.away}</span>
-                                        <div className="h-9 w-9 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                                          <span className="text-white text-[11px] font-bold">{awayInitials}</span>
+                                        <span className="text-white font-bold text-base truncate text-right">{match.home}</span>
+                                        <div className="h-10 w-10 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                                          <span className="text-white text-sm font-bold">{homeInitials}</span>
                                         </div>
+                                      </div>
+
+                                      <div className="flex items-center justify-center">
+                                        <div className="h-8 w-8 rounded-full bg-white/5 border border-white/15 flex items-center justify-center">
+                                          <span className="text-xs font-black text-gray-400 tracking-tight">VS</span>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex items-center gap-2.5 min-w-0">
+                                        <div className="h-10 w-10 shrink-0 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                                          <span className="text-white text-sm font-bold">{awayInitials}</span>
+                                        </div>
+                                        <span className="text-white font-bold text-base truncate">{match.away}</span>
                                       </div>
                                     </div>
                                   </div>

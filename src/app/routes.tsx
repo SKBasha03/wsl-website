@@ -4,6 +4,8 @@ import { FreeAgents } from "./pages/FreeAgents";
 import { Layout } from "./components/Layout";
 import { Auth } from "./pages/Auth";
 import { Fixture } from "./pages/Fixture";
+import { Schedule } from "./pages/Schedule";
+import { SeasonInfo } from "./pages/SeasonInfo";
 import { Transfers } from "./pages/Transfers";
 
 function LeagueRedirect() {
@@ -17,9 +19,9 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: Home },
       { path: "league", Component: LeagueRedirect },
-      { path: "schedule", Component: LeagueRedirect },
+      { path: "schedule", Component: Schedule },
       { path: "fixture", Component: Fixture },
-      { path: "season-info", Component: LeagueRedirect },
+      { path: "season-info", Component: SeasonInfo },
       { path: "free-agents", Component: FreeAgents },
       { path: "transfers", Component: Transfers },
       { path: "auth", Component: Auth },

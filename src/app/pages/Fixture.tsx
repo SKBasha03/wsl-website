@@ -84,13 +84,14 @@ const EMPTY_FIXTURE: FixtureData = {
 };
 
 // ─── accent palette per group ────────────────────────────────────────────────
+// Uniform monochrome to match site theme
 const GROUP_ACCENT: Record<GroupKey, { text: string; border: string; topVia: string; bar: string }> = {
-  A: { text: "text-sky-400",     border: "border-sky-500/25",     topVia: "via-sky-400/50",     bar: "bg-sky-400"     },
-  B: { text: "text-emerald-400", border: "border-emerald-500/25", topVia: "via-emerald-400/50", bar: "bg-emerald-400" },
-  C: { text: "text-amber-400",   border: "border-amber-500/25",   topVia: "via-amber-400/50",   bar: "bg-amber-400"   },
-  D: { text: "text-rose-400",    border: "border-rose-500/25",    topVia: "via-rose-400/50",    bar: "bg-rose-400"    },
-  E: { text: "text-violet-400",  border: "border-violet-500/25",  topVia: "via-violet-400/50",  bar: "bg-violet-400"  },
-  F: { text: "text-orange-400",  border: "border-orange-500/25",  topVia: "via-orange-400/50",  bar: "bg-orange-400"  },
+  A: { text: "text-white", border: "border-white/[0.08]", topVia: "via-white/20", bar: "bg-white/40" },
+  B: { text: "text-white", border: "border-white/[0.08]", topVia: "via-white/20", bar: "bg-white/40" },
+  C: { text: "text-white", border: "border-white/[0.08]", topVia: "via-white/20", bar: "bg-white/40" },
+  D: { text: "text-white", border: "border-white/[0.08]", topVia: "via-white/20", bar: "bg-white/40" },
+  E: { text: "text-white", border: "border-white/[0.08]", topVia: "via-white/20", bar: "bg-white/40" },
+  F: { text: "text-white", border: "border-white/[0.08]", topVia: "via-white/20", bar: "bg-white/40" },
 };
 
 // ─── status helpers ───────────────────────────────────────────────────────────
@@ -212,7 +213,7 @@ function GroupCard({ group, rows, animIndex }: { group: GroupKey; rows: FixtureR
       {/* header */}
       <div className="flex items-center justify-between px-5 pt-5 pb-3">
         <div className="flex items-center gap-3">
-          <span className={`text-4xl font-black tracking-tighter select-none ${accent.text}`}>G{group}</span>
+          <span className="text-4xl font-black tracking-tighter select-none text-white/90">G{group}</span>
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/40">Group {group}</p>
             <p className="text-[10px] text-white/25">{finished}/{total} played</p>
@@ -300,7 +301,7 @@ export function Fixture() {
 
   const allMatches = Object.values(data.groups).flat();
   const finished   = allMatches.filter(r => getMetaStatus(r.meta) === "finished").length;
-  const total      = allMatches.length;
+  const total      = 67; // Group stage (36) + WCL knockouts (15) + WEL knockouts (15) + WSL final (1)
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-10 space-y-10">

@@ -393,10 +393,14 @@ const SOLD_OUT_PLAYER_IDS = new Set<string>([
   "def4",
   "def29",
   "fwd15",
+  "mid2",
+  "mid24",
+  "fwd53",
+  "def11",
 ]);
 
 const IN_AUCTION_PLAYER_IDS = new Set<string>([
-  "def11",
+  
 ]);
 
 const mockPlayers: Player[] = [
@@ -447,7 +451,7 @@ const mockPlayers: Player[] = [
   { id: "def31", name: "Virgil van Dijk", position: "Defender", rating: 80, image: "https://images.unsplash.com/photo-1721506931381-3ba300ad71f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", nationality: "Unknown", club: "Free Agent", price: "€10,000,000" },
   { id: "def32", name: "Ibrahima Konaté", position: "Defender", rating: 80, image: "https://images.unsplash.com/photo-1721506931381-3ba300ad71f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", nationality: "Unknown", club: "Free Agent", price: "€10,000,000" },
   { id: "def33", name: "Joe Gomez", position: "Defender", rating: 80, image: "https://images.unsplash.com/photo-1721506931381-3ba300ad71f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", nationality: "Unknown", club: "Free Agent", price: "€10,000,000" },
-  { id: "def34", name: "Denzel Dumfries", position: "Defender", rating: 80, image: "https://images.unsplash.com/photo-1721506931381-3ba300ad71f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", nationality: "Unknown", club: "Free Agent", price: "€10,000,000" },
+  { id: "def34", name: "Denzel Dumfries", position: "Defender", rating: 80, image: "https://images.unsplash.com/photo-1721506931381-3ba300ad71f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", nationality: "Unknown", club: "Free Agent", price: "€10,000,000" },}
 
   // Midfielders
 

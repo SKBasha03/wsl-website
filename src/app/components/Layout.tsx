@@ -101,6 +101,9 @@ export function Layout() {
               <div className="flex gap-1">
                 {([
                   { to: "/", label: "HOME" },
+                  { to: "/season-info", label: "SEASON INFO" },
+                  { to: "/fixture", label: "FIXTURES" },
+                  { to: "/schedule", label: "SCHEDULE" },
                   { to: "/transfers", label: "TRANSFERS" },
                 ] as const).map(({ to, label }) => {
                   const isActive = location.pathname === to;
