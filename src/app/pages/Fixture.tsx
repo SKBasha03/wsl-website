@@ -27,7 +27,7 @@ const EMPTY_FIXTURE: FixtureData = {
   title: "WANO SUPER LEAGUE 26",
   groups: {
     A: [
-      { home: { name: "Majunu" }, away: { name: "Spartan" }, meta: "Monday | March 09, 2026" },
+      { home: { name: "Majunu" }, away: { name: "Spartan" }, meta: "Monday | March 09, 2026", homeScore: 3, awayScore: 11 },
       { home: { name: "Majunu" }, away: { name: "Harry" }, meta: "Tuesday | March 10, 2026" },
       { home: { name: "Majunu" }, away: { name: "Hasagi" }, meta: "Wednesday | March 11, 2026" },
       { home: { name: "Hasagi" }, away: { name: "Harry" }, meta: "Thursday | March 12, 2026" },
