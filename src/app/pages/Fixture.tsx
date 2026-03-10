@@ -28,7 +28,7 @@ const EMPTY_FIXTURE: FixtureData = {
   groups: {
     A: [
       { home: { name: "Majunu" }, away: { name: "Spartan" }, meta: "Monday | March 09, 2026", homeScore: 2, awayScore: 10 },
-      { home: { name: "Majunu" }, away: { name: "Harry" }, meta: "Tuesday | March 10, 2026" },
+      { home: { name: "Majunu" }, away: { name: "Harry" }, meta: "Tuesday | March 10, 2026", homeScore: 1, awayScore: 11 },
       { home: { name: "Majunu" }, away: { name: "Hasagi" }, meta: "Wednesday | March 11, 2026" },
       { home: { name: "Hasagi" }, away: { name: "Harry" }, meta: "Thursday | March 12, 2026" },
       { home: { name: "Hasagi" }, away: { name: "Spartan" }, meta: "Friday | March 13, 2026" },
@@ -36,7 +36,7 @@ const EMPTY_FIXTURE: FixtureData = {
     ],
     B: [
       { home: { name: "Nightfury" }, away: { name: "Corona" }, meta: "Monday | March 09, 2026", homeScore: 5, awayScore: 1 },
-      { home: { name: "Nightfury" }, away: { name: "Kentucky" }, meta: "Tuesday | March 10, 2026" },
+      { home: { name: "Nightfury" }, away: { name: "Kentucky" }, meta: "Tuesday | March 10, 2026", homeScore: 5, awayScore: 5 },
       { home: { name: "Nightfury" }, away: { name: "Wizard" }, meta: "Wednesday | March 11, 2026" },
       { home: { name: "Corona" }, away: { name: "Kentucky" }, meta: "Thursday | March 12, 2026" },
       { home: { name: "Corona" }, away: { name: "Wizard" }, meta: "Monday | March 09, 2026", homeScore: 0, awayScore: 12 },
@@ -47,20 +47,20 @@ const EMPTY_FIXTURE: FixtureData = {
       { home: { name: "Jilla" }, away: { name: "Slayer" }, meta: "Saturday | March 14, 2026" },
       { home: { name: "Jilla" }, away: { name: "Sudhir" }, meta: "Saturday | March 14, 2026" },
       { home: { name: "Santy" }, away: { name: "Slayer" }, meta: "Monday | March 09, 2026", homeScore: 0, awayScore: 12},
-      { home: { name: "Santy" }, away: { name: "Sudhir" }, meta: "Tuesday | March 10, 2026" },
+      { home: { name: "Santy" }, away: { name: "Sudhir" }, meta: "Tuesday | March 10, 2026", homeScore: 3, awayScore: 2 },
       { home: { name: "Slayer" }, away: { name: "Sudhir" }, meta: "Wednesday | March 11, 2026" },
     ],
     D: [
       { home: { name: "Mind" }, away: { name: "Adhil" }, meta: "Monday | March 09, 2026", homeScore: 10, awayScore: 2 },
       { home: { name: "Mind" }, away: { name: "Arvind Siva" }, meta: "Wednesday | March 11, 2026" },
-      { home: { name: "Mind" }, away: { name: "Rushyy" }, meta: "Tuesday | March 10, 2026" },
+      { home: { name: "Mind" }, away: { name: "Rushyy" }, meta: "Tuesday | March 10, 2026", homeScore: 10, awayScore: 1 },
       { home: { name: "Adhil" }, away: { name: "Arvind Siva" }, meta: "Thursday | March 12, 2026" },
       { home: { name: "Adhil" }, away: { name: "Rushyy" }, meta: "Friday | March 13, 2026" },
       { home: { name: "Arvind Siva" }, away: { name: "Rushyy" }, meta: "Friday | March 13, 2026" },
     ],
     E: [
       { home: { name: "Abhiram" }, away: { name: "ADN" }, meta: "Sunday | March 15, 2026" },
-      { home: { name: "Abhiram" }, away: { name: "Flat-C" }, meta: "Tuesday | March 10, 2026" },
+      { home: { name: "Abhiram" }, away: { name: "Flat-C" }, meta: "Tuesday | March 10, 2026", homeScore: 3, awayScore: 0 },
       { home: { name: "Abhiram" }, away: { name: "Sibin Michael" }, meta: "Saturday | March 14, 2026" },
       { home: { name: "ADN" }, away: { name: "Flat-C" }, meta: "Sunday | March 15, 2026" },
       { home: { name: "ADN" }, away: { name: "Sibin Michael" }, meta: "Saturday | March 14, 2026" },
