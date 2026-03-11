@@ -48,7 +48,7 @@ const EMPTY_FIXTURE: FixtureData = {
       { home: { name: "Jilla" }, away: { name: "Sudhir" }, meta: "Saturday | March 14, 2026" },
       { home: { name: "Santy" }, away: { name: "Slayer" }, meta: "Monday | March 09, 2026", homeScore: 0, awayScore: 12},
       { home: { name: "Santy" }, away: { name: "Sudhir" }, meta: "Tuesday | March 10, 2026", homeScore: 3, awayScore: 2 },
-      { home: { name: "Slayer" }, away: { name: "Sudhir" }, meta: "Monday | March 16, 2026"},
+      { home: { name: "Slayer" }, away: { name: "Sudhir" }, meta: "Thursday | March 12, 2026"},
     ],
     D: [
       { home: { name: "Mind" }, away: { name: "Adhil" }, meta: "Monday | March 09, 2026", homeScore: 10, awayScore: 2 },
