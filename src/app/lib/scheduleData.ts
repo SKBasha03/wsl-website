@@ -49,7 +49,7 @@ export function getAllScheduledMatches(): ScheduleMatch[] {
         mkMatch("B", 1, "Nightfury", "Corona", "Monday | March 09, 2026", "scheduled"),
         mkMatch("B", 2, "Nightfury", "Kentucky", "Tuesday | March 10, 2026", "scheduled"),
         mkMatch("B", 3, "Nightfury", "Wizard", "Wednesday | March 11, 2026", "scheduled"),
-        mkMatch("B", 4, "Corona", "Kentucky", "Thursday | March 12, 2026", "scheduled"),
+        mkMatch("B", 4, "Corona", "Kentucky", "Thursday | March 11, 2026", "scheduled"),
         mkMatch("B", 5, "Corona", "Wizard", "Monday | March 09, 2026", "scheduled"),
         mkMatch("B", 6, "Kentucky", "Wizard", "Wednesday | March 11, 2026", "scheduled"),
       ],
@@ -62,7 +62,7 @@ export function getAllScheduledMatches(): ScheduleMatch[] {
         mkMatch("C", 3, "Jilla", "Sudhir", "Saturday | March 14, 2026", "scheduled"),
         mkMatch("C", 4, "Santy", "Slayer", "Monday | March 09, 2026", "scheduled"),
         mkMatch("C", 5, "Santy", "Sudhir", "Tuesday | March 10, 2026", "scheduled"),
-        mkMatch("C", 6, "Slayer", "Sudhir", "Wednesday | March 11, 2026", "scheduled"),
+        mkMatch("C", 6, "Slayer", "Sudhir", "Wednesday | March 12, 2026", "scheduled"),
       ],
     },
     {
